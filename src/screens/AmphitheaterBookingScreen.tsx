@@ -54,7 +54,7 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
           <View style={styles.flagBlue} />
           <View style={styles.flagRed} />
           <View style={styles.arenaContent}>
-            <Text style={styles.arenaText}>🎭</Text>
+            <Text style={styles.arenaText}>🎭 🎭</Text>
             <Text style={styles.arenaLabel}>ARENA</Text>
           </View>
         </View>
