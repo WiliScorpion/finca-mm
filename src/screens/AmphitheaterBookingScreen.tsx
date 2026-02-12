@@ -3,8 +3,10 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from
 import { StudioFlat } from '../types';
 
 const { width, height } = Dimensions.get('window');
-const ARENA_SIZE = Math.min(width * 0.25, 100);
+const ARENA_SIZE = Math.min(width * 0.2, 80);
 const IS_SMALL_SCREEN = width < 400;
+const SEAT_SIZE = IS_SMALL_SCREEN ? 50 : 80;
+const CONTAINER_WIDTH = width - 20; // Account for margins
 
 interface Props {
   studios: StudioFlat[];
@@ -20,22 +22,25 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
     // Tier 1: Studios 1-4, Tier 2: Studio 5
     const tier = index < 4 ? 1 : 2;
     
+    // Calculate max radius that fits in container
+    const maxRadius = (CONTAINER_WIDTH / 2) - (SEAT_SIZE / 2) - 10; // 10px padding
+    
     if (tier === 1) {
       // 4 studios in first tier
       const studiosInTier = 4;
-      const angleSpread = IS_SMALL_SCREEN ? Math.PI * 0.8 : Math.PI; // Narrower spread on mobile
-      const angleOffset = IS_SMALL_SCREEN ? Math.PI * 0.1 : 0; // Center the arc
+      const angleSpread = IS_SMALL_SCREEN ? Math.PI * 0.7 : Math.PI * 0.85;
+      const angleOffset = IS_SMALL_SCREEN ? Math.PI * 0.15 : Math.PI * 0.075;
       const angleStep = angleSpread / (studiosInTier + 1);
       const angle = angleStep * (index + 1) + angleOffset;
       
-      const radius = ARENA_SIZE + (IS_SMALL_SCREEN ? 45 : 60);
+      const radius = Math.min(ARENA_SIZE + (IS_SMALL_SCREEN ? 40 : 60), maxRadius * 0.6);
       const x = radius * Math.cos(angle - Math.PI / 2);
       const y = radius * Math.sin(angle - Math.PI / 2);
       
       return { x, y, tier };
     } else {
       // 1 studio in second tier (centered)
-      const radius = ARENA_SIZE + (IS_SMALL_SCREEN ? 90 : 120);
+      const radius = Math.min(ARENA_SIZE + (IS_SMALL_SCREEN ? 80 : 120), maxRadius);
       const angle = Math.PI / 2; // Center position
       
       const x = radius * Math.cos(angle - Math.PI / 2);
@@ -77,8 +82,8 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
               style={[
                 styles.studioSeat,
                 {
-                  left: width / 2 + x - (IS_SMALL_SCREEN ? 27.5 : 40),
-                  top: IS_SMALL_SCREEN ? 150 + y : 200 + y,
+                  left: width / 2 + x - (SEAT_SIZE / 2),
+                  top: IS_SMALL_SCREEN ? 120 + y : 200 + y,
                 },
                 !studio.available && styles.unavailableSeat,
                 isSelected && styles.selectedSeat,
@@ -189,7 +194,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   amphitheaterContainer: {
-    height: IS_SMALL_SCREEN ? 400 : 500,
+    height: IS_SMALL_SCREEN ? 350 : 500,
     position: 'relative',
     marginBottom: 30,
     backgroundColor: '#e8d4a8',
@@ -208,7 +213,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: '#8b4513',
     left: width / 2 - ARENA_SIZE / 2,
-    top: IS_SMALL_SCREEN ? 150 : 200,
+    top: IS_SMALL_SCREEN ? 120 : 200,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -217,19 +222,19 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   arenaText: {
-    fontSize: IS_SMALL_SCREEN ? 30 : 40,
+    fontSize: IS_SMALL_SCREEN ? 25 : 40,
   },
   arenaLabel: {
-    fontSize: IS_SMALL_SCREEN ? 10 : 12,
+    fontSize: IS_SMALL_SCREEN ? 8 : 12,
     fontWeight: 'bold',
     color: '#8b4513',
     marginTop: 5,
   },
   studioSeat: {
     position: 'absolute',
-    width: IS_SMALL_SCREEN ? 55 : 80,
-    height: IS_SMALL_SCREEN ? 55 : 80,
-    borderRadius: IS_SMALL_SCREEN ? 27.5 : 40,
+    width: SEAT_SIZE,
+    height: SEAT_SIZE,
+    borderRadius: SEAT_SIZE / 2,
     backgroundColor: '#cd853f',
     borderWidth: 3,
     borderColor: '#8b4513',
@@ -244,7 +249,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   seatName: {
-    fontSize: IS_SMALL_SCREEN ? 11 : 16,
+    fontSize: IS_SMALL_SCREEN ? 10 : 16,
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
