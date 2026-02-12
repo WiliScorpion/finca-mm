@@ -63,10 +63,6 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <TouchableOpacity onPress={onBack} style={styles.backButton}>
-        <Text style={styles.backButtonText}>← Back</Text>
-      </TouchableOpacity>
-
       <Text style={styles.title}>🏛️ Finca M&M</Text>
       <Text style={styles.subtitle}>Select Your Studio</Text>
 
@@ -174,15 +170,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingBottom: 40,
-  },
-  backButton: {
-    padding: 20,
     paddingTop: 50,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: '#8b4513',
-    fontWeight: '600',
   },
   title: {
     fontSize: IS_SMALL_SCREEN ? 22 : 28,
