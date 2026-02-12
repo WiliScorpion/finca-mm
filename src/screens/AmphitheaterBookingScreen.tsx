@@ -3,10 +3,11 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from
 import { StudioFlat } from '../types';
 
 const { width, height } = Dimensions.get('window');
-const ARENA_SIZE = Math.min(width * 0.2, 80);
 const IS_SMALL_SCREEN = width < 400;
-const SEAT_SIZE = IS_SMALL_SCREEN ? 50 : 80;
-const CONTAINER_WIDTH = width - 20; // Account for margins
+const CONTAINER_PADDING = 20;
+const USABLE_WIDTH = width - (CONTAINER_PADDING * 2);
+const SEAT_SIZE = IS_SMALL_SCREEN ? 45 : 80;
+const ARENA_SIZE = IS_SMALL_SCREEN ? 60 : 100;
 
 interface Props {
   studios: StudioFlat[];
@@ -22,26 +23,31 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
     // Tier 1: Studios 1-4, Tier 2: Studio 5
     const tier = index < 4 ? 1 : 2;
     
-    // Calculate max radius that fits in container
-    const maxRadius = (CONTAINER_WIDTH / 2) - (SEAT_SIZE / 2) - 10; // 10px padding
+    // Calculate safe radius - ensure seats don't overflow
+    const maxAllowedRadius = (USABLE_WIDTH / 2) - (SEAT_SIZE / 2) - 5;
     
     if (tier === 1) {
-      // 4 studios in first tier
+      // 4 studios in first tier - arrange in tighter arc
       const studiosInTier = 4;
-      const angleSpread = IS_SMALL_SCREEN ? Math.PI * 0.7 : Math.PI * 0.85;
-      const angleOffset = IS_SMALL_SCREEN ? Math.PI * 0.15 : Math.PI * 0.075;
+      // Use 60 degrees arc (π/3) instead of 180 to keep everything compact
+      const angleSpread = IS_SMALL_SCREEN ? Math.PI * 0.6 : Math.PI * 0.8;
+      const angleOffset = IS_SMALL_SCREEN ? Math.PI * 0.2 : Math.PI * 0.1;
       const angleStep = angleSpread / (studiosInTier + 1);
       const angle = angleStep * (index + 1) + angleOffset;
       
-      const radius = Math.min(ARENA_SIZE + (IS_SMALL_SCREEN ? 40 : 60), maxRadius * 0.6);
+      // Use smaller radius on mobile
+      const baseRadius = IS_SMALL_SCREEN ? 35 : 60;
+      const radius = Math.min(ARENA_SIZE + baseRadius, maxAllowedRadius * 0.65);
+      
       const x = radius * Math.cos(angle - Math.PI / 2);
       const y = radius * Math.sin(angle - Math.PI / 2);
       
       return { x, y, tier };
     } else {
-      // 1 studio in second tier (centered)
-      const radius = Math.min(ARENA_SIZE + (IS_SMALL_SCREEN ? 80 : 120), maxRadius);
-      const angle = Math.PI / 2; // Center position
+      // 1 studio in second tier (centered at top)
+      const baseRadius = IS_SMALL_SCREEN ? 70 : 110;
+      const radius = Math.min(ARENA_SIZE + baseRadius, maxAllowedRadius * 0.9);
+      const angle = Math.PI / 2;
       
       const x = radius * Math.cos(angle - Math.PI / 2);
       const y = radius * Math.sin(angle - Math.PI / 2);
@@ -82,8 +88,8 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
               style={[
                 styles.studioSeat,
                 {
-                  left: width / 2 + x - (SEAT_SIZE / 2),
-                  top: IS_SMALL_SCREEN ? 120 + y : 200 + y,
+                  left: (USABLE_WIDTH / 2) + CONTAINER_PADDING + x - (SEAT_SIZE / 2),
+                  top: IS_SMALL_SCREEN ? 100 + y : 180 + y,
                 },
                 !studio.available && styles.unavailableSeat,
                 isSelected && styles.selectedSeat,
@@ -194,12 +200,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   amphitheaterContainer: {
-    height: IS_SMALL_SCREEN ? 350 : 500,
+    height: IS_SMALL_SCREEN ? 320 : 480,
     position: 'relative',
     marginBottom: 30,
     backgroundColor: '#e8d4a8',
     borderRadius: 20,
-    marginHorizontal: 10,
+    marginHorizontal: CONTAINER_PADDING,
     borderWidth: 3,
     borderColor: '#8b4513',
     overflow: 'hidden',
@@ -212,8 +218,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#d4a574',
     borderWidth: 3,
     borderColor: '#8b4513',
-    left: width / 2 - ARENA_SIZE / 2,
-    top: IS_SMALL_SCREEN ? 120 : 200,
+    left: (USABLE_WIDTH / 2) + CONTAINER_PADDING - (ARENA_SIZE / 2),
+    top: IS_SMALL_SCREEN ? 100 : 180,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -222,13 +228,13 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   arenaText: {
-    fontSize: IS_SMALL_SCREEN ? 25 : 40,
+    fontSize: IS_SMALL_SCREEN ? 20 : 40,
   },
   arenaLabel: {
-    fontSize: IS_SMALL_SCREEN ? 8 : 12,
+    fontSize: IS_SMALL_SCREEN ? 7 : 12,
     fontWeight: 'bold',
     color: '#8b4513',
-    marginTop: 5,
+    marginTop: 2,
   },
   studioSeat: {
     position: 'absolute',
@@ -249,11 +255,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   seatName: {
-    fontSize: IS_SMALL_SCREEN ? 10 : 16,
+    fontSize: IS_SMALL_SCREEN ? 9 : 16,
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
-    paddingHorizontal: 2,
+    paddingHorizontal: 1,
   },
   seatTier: {
     fontSize: 10,
