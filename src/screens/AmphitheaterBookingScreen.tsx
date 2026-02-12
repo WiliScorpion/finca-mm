@@ -23,18 +23,19 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
     if (tier === 1) {
       // 4 studios in first tier
       const studiosInTier = 4;
-      const angleSpread = Math.PI; // 180 degrees for semicircle
+      const angleSpread = IS_SMALL_SCREEN ? Math.PI * 0.8 : Math.PI; // Narrower spread on mobile
+      const angleOffset = IS_SMALL_SCREEN ? Math.PI * 0.1 : 0; // Center the arc
       const angleStep = angleSpread / (studiosInTier + 1);
-      const angle = angleStep * (index + 1);
+      const angle = angleStep * (index + 1) + angleOffset;
       
-      const radius = ARENA_SIZE + (IS_SMALL_SCREEN ? 50 : 60);
+      const radius = ARENA_SIZE + (IS_SMALL_SCREEN ? 45 : 60);
       const x = radius * Math.cos(angle - Math.PI / 2);
       const y = radius * Math.sin(angle - Math.PI / 2);
       
       return { x, y, tier };
     } else {
       // 1 studio in second tier (centered)
-      const radius = ARENA_SIZE + (IS_SMALL_SCREEN ? 100 : 120);
+      const radius = ARENA_SIZE + (IS_SMALL_SCREEN ? 90 : 120);
       const angle = Math.PI / 2; // Center position
       
       const x = radius * Math.cos(angle - Math.PI / 2);
@@ -76,7 +77,7 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
               style={[
                 styles.studioSeat,
                 {
-                  left: width / 2 + x - (IS_SMALL_SCREEN ? 30 : 40),
+                  left: width / 2 + x - (IS_SMALL_SCREEN ? 27.5 : 40),
                   top: IS_SMALL_SCREEN ? 150 + y : 200 + y,
                 },
                 !studio.available && styles.unavailableSeat,
@@ -196,6 +197,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderWidth: 3,
     borderColor: '#8b4513',
+    overflow: 'hidden',
   },
   arena: {
     position: 'absolute',
@@ -225,9 +227,9 @@ const styles = StyleSheet.create({
   },
   studioSeat: {
     position: 'absolute',
-    width: IS_SMALL_SCREEN ? 60 : 80,
-    height: IS_SMALL_SCREEN ? 60 : 80,
-    borderRadius: IS_SMALL_SCREEN ? 30 : 40,
+    width: IS_SMALL_SCREEN ? 55 : 80,
+    height: IS_SMALL_SCREEN ? 55 : 80,
+    borderRadius: IS_SMALL_SCREEN ? 27.5 : 40,
     backgroundColor: '#cd853f',
     borderWidth: 3,
     borderColor: '#8b4513',
@@ -242,10 +244,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   seatName: {
-    fontSize: IS_SMALL_SCREEN ? 12 : 16,
+    fontSize: IS_SMALL_SCREEN ? 11 : 16,
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
+    paddingHorizontal: 2,
   },
   seatTier: {
     fontSize: 10,
