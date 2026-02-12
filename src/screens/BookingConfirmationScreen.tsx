@@ -79,7 +79,7 @@ export default function BookingConfirmationScreen({ booking, onBackToHome }: Pro
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f4e4c1',
     padding: 20,
     paddingTop: 60,
     alignItems: 'center',
@@ -88,10 +88,12 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#cd853f',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
+    borderWidth: 3,
+    borderColor: '#8b4513',
   },
   checkmark: {
     fontSize: 50,
@@ -101,12 +103,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#8b4513',
     marginBottom: 5,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: '#a0522d',
     marginBottom: 30,
   },
   card: {
@@ -120,11 +122,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    borderWidth: 3,
+    borderColor: '#8b4513',
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#8b4513',
     marginBottom: 15,
   },
   row: {
@@ -134,39 +138,41 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: '#666',
+    color: '#a0522d',
   },
   value: {
     fontSize: 14,
-    color: '#333',
+    color: '#8b4513',
     fontWeight: '500',
   },
   divider: {
-    height: 1,
-    backgroundColor: '#e0e0e0',
+    height: 2,
+    backgroundColor: '#d4a574',
     marginVertical: 15,
   },
   totalLabel: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#8b4513',
   },
   totalValue: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#4CAF50',
+    color: '#cd853f',
   },
   infoText: {
     fontSize: 14,
-    color: '#666',
+    color: '#a0522d',
     textAlign: 'center',
     marginBottom: 30,
   },
   button: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#cd853f',
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#8b4513',
   },
   buttonText: {
     color: '#fff',

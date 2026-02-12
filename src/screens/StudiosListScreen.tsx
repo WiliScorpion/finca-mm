@@ -87,7 +87,7 @@ export default function StudiosListScreen({ onSelectStudio }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f4e4c1',
     paddingTop: 50,
   },
   header: {
@@ -100,13 +100,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#8b4513',
   },
   viewToggle: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#cd853f',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#8b4513',
   },
   viewToggleText: {
     color: '#fff',
@@ -117,7 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
-    color: '#666',
+    color: '#a0522d',
     paddingHorizontal: 15,
   },
   list: {
@@ -133,6 +135,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    borderWidth: 2,
+    borderColor: '#d4a574',
   },
   cardHeader: {
     flexDirection: 'row',
@@ -143,13 +147,13 @@ const styles = StyleSheet.create({
   studioName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#8b4513',
     flex: 1,
   },
   price: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#2196F3',
+    color: '#cd853f',
   },
   description: {
     fontSize: 14,
@@ -163,7 +167,7 @@ const styles = StyleSheet.create({
   },
   capacity: {
     fontSize: 14,
-    color: '#666',
+    color: '#8b4513',
   },
   status: {
     fontSize: 14,
@@ -179,24 +183,29 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   amenityTag: {
-    backgroundColor: '#E3F2FD',
+    backgroundColor: '#e8d4a8',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 15,
     marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#cd853f',
   },
   amenityText: {
     fontSize: 12,
-    color: '#1976D2',
+    color: '#8b4513',
   },
   bookButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#cd853f',
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#8b4513',
   },
   bookButtonDisabled: {
     backgroundColor: '#ccc',
+    borderColor: '#999',
   },
   bookButtonText: {
     color: '#fff',

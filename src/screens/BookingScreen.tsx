@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Alert, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Alert, Dimensions, Platform } from 'react-native';
 import { StudioFlat, Booking } from '../types';
 
 interface Props {
@@ -15,6 +15,23 @@ export default function BookingScreen({ studio, onBack, onBookingComplete }: Pro
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [guests, setGuests] = useState('1');
+  const [showCheckInPicker, setShowCheckInPicker] = useState(false);
+  const [showCheckOutPicker, setShowCheckOutPicker] = useState(false);
+
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const handleCheckInChange = (dateString: string) => {
+    setCheckIn(dateString);
+  };
+
+  const handleCheckOutChange = (dateString: string) => {
+    setCheckOut(dateString);
+  };
 
   const calculateNights = () => {
     if (!checkIn || !checkOut) return 0;
@@ -102,21 +119,63 @@ export default function BookingScreen({ studio, onBack, onBookingComplete }: Pro
           keyboardType="phone-pad"
         />
 
-        <Text style={styles.label}>Check-in Date * (YYYY-MM-DD)</Text>
-        <TextInput
-          style={styles.input}
-          value={checkIn}
-          onChangeText={setCheckIn}
-          placeholder="2024-03-15"
-        />
+        <Text style={styles.label}>Check-in Date *</Text>
+        <TouchableOpacity 
+          style={styles.dateInput}
+          onPress={() => setShowCheckInPicker(!showCheckInPicker)}
+        >
+          <Text style={checkIn ? styles.dateText : styles.datePlaceholder}>
+            {checkIn || 'Select check-in date'}
+          </Text>
+          <Text style={styles.calendarIcon}>📅</Text>
+        </TouchableOpacity>
+        {showCheckInPicker && (
+          <input
+            type="date"
+            value={checkIn}
+            onChange={(e) => {
+              handleCheckInChange(e.target.value);
+              setShowCheckInPicker(false);
+            }}
+            style={{
+              width: '100%',
+              padding: 12,
+              fontSize: 16,
+              borderRadius: 8,
+              border: '1px solid #ddd',
+              marginBottom: 15,
+            }}
+          />
+        )}
 
-        <Text style={styles.label}>Check-out Date * (YYYY-MM-DD)</Text>
-        <TextInput
-          style={styles.input}
-          value={checkOut}
-          onChangeText={setCheckOut}
-          placeholder="2024-03-20"
-        />
+        <Text style={styles.label}>Check-out Date *</Text>
+        <TouchableOpacity 
+          style={styles.dateInput}
+          onPress={() => setShowCheckOutPicker(!showCheckOutPicker)}
+        >
+          <Text style={checkOut ? styles.dateText : styles.datePlaceholder}>
+            {checkOut || 'Select check-out date'}
+          </Text>
+          <Text style={styles.calendarIcon}>📅</Text>
+        </TouchableOpacity>
+        {showCheckOutPicker && (
+          <input
+            type="date"
+            value={checkOut}
+            onChange={(e) => {
+              handleCheckOutChange(e.target.value);
+              setShowCheckOutPicker(false);
+            }}
+            style={{
+              width: '100%',
+              padding: 12,
+              fontSize: 16,
+              borderRadius: 8,
+              border: '1px solid #ddd',
+              marginBottom: 15,
+            }}
+          />
+        )}
 
         <Text style={styles.label}>Number of Guests *</Text>
         <TextInput
@@ -147,7 +206,7 @@ export default function BookingScreen({ studio, onBack, onBookingComplete }: Pro
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f4e4c1',
     padding: 20,
     paddingTop: 50,
   },
@@ -156,70 +215,107 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 16,
-    color: '#2196F3',
+    color: '#8b4513',
+    fontWeight: '600',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#333',
+    color: '#8b4513',
+    textAlign: 'center',
   },
   studioInfo: {
-    backgroundColor: '#fff',
+    backgroundColor: '#e8d4a8',
     padding: 15,
     borderRadius: 8,
     marginBottom: 20,
+    borderWidth: 2,
+    borderColor: '#8b4513',
   },
   studioPrice: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#2196F3',
+    color: '#cd853f',
     marginBottom: 5,
   },
   studioCapacity: {
     fontSize: 14,
-    color: '#666',
+    color: '#8b4513',
   },
   form: {
     backgroundColor: '#fff',
     padding: 20,
-    borderRadius: 8,
+    borderRadius: 12,
+    borderWidth: 3,
+    borderColor: '#8b4513',
   },
   label: {
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 5,
-    color: '#333',
+    color: '#8b4513',
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
+    borderWidth: 2,
+    borderColor: '#cd853f',
     borderRadius: 8,
     padding: 12,
     marginBottom: 15,
     fontSize: 16,
+    backgroundColor: '#fef9f0',
+  },
+  dateInput: {
+    borderWidth: 2,
+    borderColor: '#cd853f',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fef9f0',
+  },
+  dateText: {
+    fontSize: 16,
+    color: '#8b4513',
+  },
+  datePlaceholder: {
+    fontSize: 16,
+    color: '#a0522d',
+  },
+  calendarIcon: {
+    fontSize: 20,
   },
   summary: {
-    backgroundColor: '#E3F2FD',
+    backgroundColor: '#e8d4a8',
     padding: 15,
     borderRadius: 8,
     marginBottom: 20,
+    borderWidth: 2,
+    borderColor: '#cd853f',
   },
   summaryText: {
     fontSize: 16,
-    color: '#333',
+    color: '#8b4513',
     marginBottom: 5,
   },
   totalPrice: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#2196F3',
+    color: '#cd853f',
   },
   submitButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#cd853f',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#8b4513',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
   },
   submitButtonText: {
     color: '#fff',
