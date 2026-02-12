@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { StudioFlat } from '../types';
 
-const { width } = Dimensions.get('window');
-const ARENA_SIZE = Math.min(width * 0.4, 150);
+const { width, height } = Dimensions.get('window');
+const ARENA_SIZE = Math.min(width * 0.25, 100);
+const IS_SMALL_SCREEN = width < 400;
 
 interface Props {
   studios: StudioFlat[];
@@ -26,14 +27,14 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
       const angleStep = angleSpread / (studiosInTier + 1);
       const angle = angleStep * (index + 1);
       
-      const radius = ARENA_SIZE + 60;
+      const radius = ARENA_SIZE + (IS_SMALL_SCREEN ? 50 : 60);
       const x = radius * Math.cos(angle - Math.PI / 2);
       const y = radius * Math.sin(angle - Math.PI / 2);
       
       return { x, y, tier };
     } else {
       // 1 studio in second tier (centered)
-      const radius = ARENA_SIZE + 120;
+      const radius = ARENA_SIZE + (IS_SMALL_SCREEN ? 100 : 120);
       const angle = Math.PI / 2; // Center position
       
       const x = radius * Math.cos(angle - Math.PI / 2);
@@ -75,8 +76,8 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
               style={[
                 styles.studioSeat,
                 {
-                  left: width / 2 + x - 40,
-                  top: 200 + y,
+                  left: width / 2 + x - (IS_SMALL_SCREEN ? 30 : 40),
+                  top: IS_SMALL_SCREEN ? 150 + y : 200 + y,
                 },
                 !studio.available && styles.unavailableSeat,
                 isSelected && styles.selectedSeat,
@@ -172,20 +173,22 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   title: {
-    fontSize: 28,
+    fontSize: IS_SMALL_SCREEN ? 22 : 28,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#8b4513',
     marginBottom: 5,
+    paddingHorizontal: 10,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: IS_SMALL_SCREEN ? 14 : 16,
     textAlign: 'center',
     color: '#a0522d',
     marginBottom: 20,
+    paddingHorizontal: 10,
   },
   amphitheaterContainer: {
-    height: 500,
+    height: IS_SMALL_SCREEN ? 400 : 500,
     position: 'relative',
     marginBottom: 30,
     backgroundColor: '#e8d4a8',
@@ -203,7 +206,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: '#8b4513',
     left: width / 2 - ARENA_SIZE / 2,
-    top: 200,
+    top: IS_SMALL_SCREEN ? 150 : 200,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -212,19 +215,19 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   arenaText: {
-    fontSize: 40,
+    fontSize: IS_SMALL_SCREEN ? 30 : 40,
   },
   arenaLabel: {
-    fontSize: 12,
+    fontSize: IS_SMALL_SCREEN ? 10 : 12,
     fontWeight: 'bold',
     color: '#8b4513',
     marginTop: 5,
   },
   studioSeat: {
     position: 'absolute',
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: IS_SMALL_SCREEN ? 60 : 80,
+    height: IS_SMALL_SCREEN ? 60 : 80,
+    borderRadius: IS_SMALL_SCREEN ? 30 : 40,
     backgroundColor: '#cd853f',
     borderWidth: 3,
     borderColor: '#8b4513',
@@ -239,15 +242,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   seatName: {
-    fontSize: 16,
+    fontSize: IS_SMALL_SCREEN ? 12 : 16,
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
-  },
-  seatNumber: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
   },
   seatTier: {
     fontSize: 10,
@@ -267,21 +265,21 @@ const styles = StyleSheet.create({
   },
   column: {
     position: 'absolute',
-    width: 40,
-    height: 120,
+    width: IS_SMALL_SCREEN ? 30 : 40,
+    height: IS_SMALL_SCREEN ? 80 : 120,
     justifyContent: 'center',
     alignItems: 'center',
   },
   columnLeft: {
-    left: 20,
+    left: IS_SMALL_SCREEN ? 10 : 20,
     top: 50,
   },
   columnRight: {
-    right: 20,
+    right: IS_SMALL_SCREEN ? 10 : 20,
     top: 50,
   },
   columnText: {
-    fontSize: 50,
+    fontSize: IS_SMALL_SCREEN ? 35 : 50,
   },
   detailsSection: {
     paddingHorizontal: 20,
