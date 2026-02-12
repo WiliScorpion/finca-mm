@@ -27,9 +27,9 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
     // Calculate safe radius - ensure seats don't overflow
     const maxAllowedRadius = (USABLE_WIDTH / 2) - (SEAT_SIZE / 2) - 5;
     
-    // Single radius for all studios
-    const baseRadius = IS_SMALL_SCREEN ? 55 : 85;
-    const radius = Math.min(ARENA_SIZE + baseRadius, maxAllowedRadius * 0.75);
+    // Smaller radius to keep buttons closer to arena
+    const baseRadius = IS_SMALL_SCREEN ? 42 : 70;
+    const radius = Math.min(ARENA_SIZE + baseRadius, maxAllowedRadius * 0.7);
     
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
