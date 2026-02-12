@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Alert, Dimensions, Platform } from 'react-native';
 import { StudioFlat, Booking } from '../types';
+import DateTimePicker from '../components/DateTimePicker';
 
 interface Props {
   studio: StudioFlat;
@@ -13,24 +14,19 @@ export default function BookingScreen({ studio, onBack, onBookingComplete }: Pro
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
   const [checkIn, setCheckIn] = useState('');
+  const [checkInTime, setCheckInTime] = useState('');
   const [checkOut, setCheckOut] = useState('');
+  const [checkOutTime, setCheckOutTime] = useState('');
   const [guests, setGuests] = useState('1');
-  const [showCheckInPicker, setShowCheckInPicker] = useState(false);
-  const [showCheckOutPicker, setShowCheckOutPicker] = useState(false);
 
-  const formatDate = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+  const handleCheckInChange = (date: string, time: string) => {
+    setCheckIn(date);
+    setCheckInTime(time);
   };
 
-  const handleCheckInChange = (dateString: string) => {
-    setCheckIn(dateString);
-  };
-
-  const handleCheckOutChange = (dateString: string) => {
-    setCheckOut(dateString);
+  const handleCheckOutChange = (date: string, time: string) => {
+    setCheckOut(date);
+    setCheckOutTime(time);
   };
 
   const calculateNights = () => {
@@ -119,63 +115,21 @@ export default function BookingScreen({ studio, onBack, onBookingComplete }: Pro
           keyboardType="phone-pad"
         />
 
-        <Text style={styles.label}>Check-in Date *</Text>
-        <TouchableOpacity 
-          style={styles.dateInput}
-          onPress={() => setShowCheckInPicker(!showCheckInPicker)}
-        >
-          <Text style={checkIn ? styles.dateText : styles.datePlaceholder}>
-            {checkIn || 'Select check-in date'}
-          </Text>
-          <Text style={styles.calendarIcon}>📅</Text>
-        </TouchableOpacity>
-        {showCheckInPicker && (
-          <input
-            type="date"
-            value={checkIn}
-            onChange={(e) => {
-              handleCheckInChange(e.target.value);
-              setShowCheckInPicker(false);
-            }}
-            style={{
-              width: '100%',
-              padding: 12,
-              fontSize: 16,
-              borderRadius: 8,
-              border: '1px solid #ddd',
-              marginBottom: 15,
-            }}
-          />
-        )}
+        <Text style={styles.label}>Check-in Date & Time *</Text>
+        <DateTimePicker
+          value={checkIn}
+          onChange={handleCheckInChange}
+          label="Select Check-in"
+          minDate={new Date()}
+        />
 
-        <Text style={styles.label}>Check-out Date *</Text>
-        <TouchableOpacity 
-          style={styles.dateInput}
-          onPress={() => setShowCheckOutPicker(!showCheckOutPicker)}
-        >
-          <Text style={checkOut ? styles.dateText : styles.datePlaceholder}>
-            {checkOut || 'Select check-out date'}
-          </Text>
-          <Text style={styles.calendarIcon}>📅</Text>
-        </TouchableOpacity>
-        {showCheckOutPicker && (
-          <input
-            type="date"
-            value={checkOut}
-            onChange={(e) => {
-              handleCheckOutChange(e.target.value);
-              setShowCheckOutPicker(false);
-            }}
-            style={{
-              width: '100%',
-              padding: 12,
-              fontSize: 16,
-              borderRadius: 8,
-              border: '1px solid #ddd',
-              marginBottom: 15,
-            }}
-          />
-        )}
+        <Text style={styles.label}>Check-out Date & Time *</Text>
+        <DateTimePicker
+          value={checkOut}
+          onChange={handleCheckOutChange}
+          label="Select Check-out"
+          minDate={checkIn ? new Date(checkIn) : new Date()}
+        />
 
         <Text style={styles.label}>Number of Guests *</Text>
         <TextInput
@@ -264,28 +218,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 16,
     backgroundColor: '#fef9f0',
-  },
-  dateInput: {
-    borderWidth: 2,
-    borderColor: '#cd853f',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#fef9f0',
-  },
-  dateText: {
-    fontSize: 16,
-    color: '#8b4513',
-  },
-  datePlaceholder: {
-    fontSize: 16,
-    color: '#a0522d',
-  },
-  calendarIcon: {
-    fontSize: 20,
   },
   summary: {
     backgroundColor: '#e8d4a8',
