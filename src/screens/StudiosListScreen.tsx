@@ -62,7 +62,7 @@ export default function StudiosListScreen({ onSelectStudio }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Finca M&M Studios</Text>
+        <Text style={styles.title}>Finca M&M</Text>
         <TouchableOpacity 
           style={styles.viewToggle}
           onPress={() => setViewMode(viewMode === 'list' ? 'amphitheater' : 'list')}

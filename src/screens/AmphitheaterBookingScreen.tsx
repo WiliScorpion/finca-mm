@@ -54,7 +54,7 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
         <Text style={styles.backButtonText}>← Back</Text>
       </TouchableOpacity>
 
-      <Text style={styles.title}>🏛️ Amphitheatrum Finca</Text>
+      <Text style={styles.title}>🏛️ Finca M&M</Text>
       <Text style={styles.subtitle}>Select Your Studio</Text>
 
       <View style={styles.amphitheaterContainer}>
