@@ -1,6 +1,7 @@
 {
   "name": "finca-mm",
   "version": "1.0.0",
+  "homepage": "https://WiliScorpion.github.io/finca-mm",
   "main": "index.js",
   "scripts": {
     "start": "expo start",
