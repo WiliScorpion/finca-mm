@@ -1,5 +1,8 @@
 {
-  "buildCommand": "npm run build:web",
+  "buildCommand": "npm install && npm run build:web",
   "outputDirectory": "dist",
-  "framework": "react"
+  "framework": "react",
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
