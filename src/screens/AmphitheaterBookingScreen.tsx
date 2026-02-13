@@ -24,12 +24,11 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
     const angleStep = (Math.PI * 2) / total; // Full circle divided by number of studios
     const angle = angleStep * index - Math.PI / 2; // Start from top
     
-    // Calculate safe radius - ensure seats don't overflow
-    const maxAllowedRadius = (USABLE_WIDTH / 2) - (SEAT_SIZE / 2) - 5;
-    
-    // Smaller radius to keep buttons closer to arena
-    const baseRadius = IS_SMALL_SCREEN ? 42 : 70;
-    const radius = Math.min(ARENA_SIZE + baseRadius, maxAllowedRadius * 0.7);
+    // Consistent distance from arena edge to button edge
+    const arenaRadius = ARENA_SIZE / 2;
+    const buttonRadius = SEAT_SIZE / 2;
+    const gapDistance = IS_SMALL_SCREEN ? 15 : 20;
+    const radius = arenaRadius + gapDistance + buttonRadius;
     
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
@@ -63,6 +62,7 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
         {studios.map((studio, index) => {
           const { x, y } = getStudioPosition(index, studios.length);
           const isSelected = selectedStudio === studio.id;
+          const arenaCenter = IS_SMALL_SCREEN ? (280 - ARENA_SIZE) / 2 : (400 - ARENA_SIZE) / 2;
           
           return (
             <TouchableOpacity
@@ -71,7 +71,7 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
                 styles.studioSeat,
                 {
                   left: (USABLE_WIDTH / 2) + CONTAINER_PADDING + x - (SEAT_SIZE / 2),
-                  top: (IS_SMALL_SCREEN ? 140 : 200) + y,
+                  top: arenaCenter + (ARENA_SIZE / 2) + y - (SEAT_SIZE / 2),
                 },
                 !studio.available && styles.unavailableSeat,
                 isSelected && styles.selectedSeat,
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: '#8b4513',
     left: (USABLE_WIDTH / 2) + CONTAINER_PADDING - (ARENA_SIZE / 2),
-    top: IS_SMALL_SCREEN ? 140 : 200,
+    top: IS_SMALL_SCREEN ? (280 - ARENA_SIZE) / 2 : (400 - ARENA_SIZE) / 2,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -259,11 +259,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   seatName: {
-    fontSize: IS_SMALL_SCREEN ? 9 : 16,
+    fontSize: IS_SMALL_SCREEN ? 7 : 11,
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
-    paddingHorizontal: 1,
+    paddingHorizontal: 2,
+    paddingVertical: 2,
+    maxWidth: SEAT_SIZE - 8,
+    overflow: 'hidden',
   },
   seatTier: {
     fontSize: 10,

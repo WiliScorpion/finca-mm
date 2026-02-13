@@ -3,7 +3,7 @@ import { StudioFlat } from '../types';
 export const STUDIOS: StudioFlat[] = [
   {
     id: 1,
-    name: '🐦 Sparrow',
+    name: '🐦 Carpintero',
     description: 'Budget-friendly studio',
     price: 60,
     capacity: 2,
@@ -12,7 +12,7 @@ export const STUDIOS: StudioFlat[] = [
   },
   {
     id: 2,
-    name: '🐦 Robin',
+    name: '🐦 Periquito',
     description: 'Cozy studio perfect for couples',
     price: 70,
     capacity: 2,
@@ -21,7 +21,7 @@ export const STUDIOS: StudioFlat[] = [
   },
   {
     id: 3,
-    name: '🦅 Falcon',
+    name: '🦅 Tucán',
     description: 'Spacious studio with mountain view',
     price: 80,
     capacity: 2,
@@ -30,7 +30,7 @@ export const STUDIOS: StudioFlat[] = [
   },
   {
     id: 4,
-    name: '🦅 Hawk',
+    name: '🦅 Zambullidor',
     description: 'Large studio ideal for families',
     price: 100,
     capacity: 4,
@@ -39,7 +39,7 @@ export const STUDIOS: StudioFlat[] = [
   },
   {
     id: 5,
-    name: '🦅 Eagle',
+    name: '🦅 Cacique amarillo',
     description: 'Luxury studio with all amenities',
     price: 120,
     capacity: 3,
