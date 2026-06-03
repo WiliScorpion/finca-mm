@@ -1,3 +1,6 @@
+/**
+ * Studio and Booking Types
+ */
 export interface StudioFlat {
   id: number;
   name: string;
@@ -6,6 +9,7 @@ export interface StudioFlat {
   capacity: number;
   amenities: string[];
   imageUrl?: string;
+  images?: any[];
   available: boolean;
 }
 
@@ -21,3 +25,11 @@ export interface Booking {
   totalPrice: number;
   status: 'pending' | 'confirmed' | 'cancelled';
 }
+
+/**
+ * Export all auth, payment, and MFA types
+ */
+export * from './auth';
+export * from './payment';
+export * from './mfa';
+export * from './api';

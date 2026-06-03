@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Alert, Dimensions, Platform } from 'react-native';
 import { StudioFlat, Booking } from '../types';
 import DateTimePicker from '../components/DateTimePicker';
+import Header from '../components/Header';
+import RoomGallery from '../components/RoomGallery';
 
 interface Props {
   studio: StudioFlat;
@@ -76,13 +78,10 @@ export default function BookingScreen({ studio, onBack, onBookingComplete }: Pro
 
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity onPress={onBack} style={styles.backButton}>
-        <Text style={styles.backButtonText}>← Back</Text>
-      </TouchableOpacity>
+      <Header onHome={onBack} title={`Book ${studio.name}`} />
 
-      <Text style={styles.title}>Book {studio.name}</Text>
-      
       <View style={styles.studioInfo}>
+        <RoomGallery images={studio.images || []} roomName={studio.name} />
         <Text style={styles.studioPrice}>${studio.price}/night</Text>
         <Text style={styles.studioCapacity}>Up to {studio.capacity} guests</Text>
       </View>
@@ -161,23 +160,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f4e4c1',
-    padding: 20,
-    paddingTop: 50,
-  },
-  backButton: {
-    marginBottom: 20,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: '#8b4513',
-    fontWeight: '600',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#8b4513',
-    textAlign: 'center',
   },
   studioInfo: {
     backgroundColor: '#e8d4a8',
@@ -186,6 +168,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderWidth: 2,
     borderColor: '#8b4513',
+    marginHorizontal: 20,
+    marginTop: 15,
   },
   studioPrice: {
     fontSize: 20,
@@ -203,6 +187,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 3,
     borderColor: '#8b4513',
+    marginHorizontal: 20,
+    marginBottom: 30,
   },
   label: {
     fontSize: 14,

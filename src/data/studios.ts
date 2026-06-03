@@ -8,6 +8,7 @@ export const STUDIOS: StudioFlat[] = [
     price: 60,
     capacity: 2,
     amenities: ['WiFi', 'Kitchenette', 'Fan', 'TV'],
+    images: [],
     available: true,
   },
   {
@@ -17,6 +18,7 @@ export const STUDIOS: StudioFlat[] = [
     price: 70,
     capacity: 2,
     amenities: ['WiFi', 'Kitchenette', 'Air Conditioning', 'TV'],
+    images: [],
     available: true,
   },
   {
@@ -26,6 +28,7 @@ export const STUDIOS: StudioFlat[] = [
     price: 80,
     capacity: 2,
     amenities: ['WiFi', 'Kitchen', 'Air Conditioning', 'TV', 'Private Bathroom'],
+    images: [],
     available: true,
   },
   {
@@ -35,6 +38,7 @@ export const STUDIOS: StudioFlat[] = [
     price: 100,
     capacity: 4,
     amenities: ['WiFi', 'Full Kitchen', 'Air Conditioning', 'TV', 'Balcony'],
+    images: [],
     available: true,
   },
   {
@@ -44,6 +48,7 @@ export const STUDIOS: StudioFlat[] = [
     price: 120,
     capacity: 3,
     amenities: ['WiFi', 'Full Kitchen', 'Air Conditioning', 'Smart TV', 'Balcony', 'Jacuzzi'],
+    images: [],
     available: true,
   },
 ];

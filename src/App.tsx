@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import StudiosListScreen from './screens/StudiosListScreen';
 import BookingScreen from './screens/BookingScreen';
@@ -8,9 +8,9 @@ import { StudioFlat, Booking } from './types';
 type Screen = 'list' | 'booking' | 'confirmation';
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('list');
-  const [selectedStudio, setSelectedStudio] = useState<StudioFlat | null>(null);
-  const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null);
+  const [currentScreen, setCurrentScreen] = React.useState<Screen>('list');
+  const [selectedStudio, setSelectedStudio] = React.useState<StudioFlat | null>(null);
+  const [confirmedBooking, setConfirmedBooking] = React.useState<Booking | null>(null);
 
   const handleSelectStudio = (studio: StudioFlat) => {
     setSelectedStudio(studio);
@@ -33,7 +33,6 @@ export default function App() {
       {currentScreen === 'list' && (
         <StudiosListScreen onSelectStudio={handleSelectStudio} />
       )}
-      
       {currentScreen === 'booking' && selectedStudio && (
         <BookingScreen
           studio={selectedStudio}
@@ -41,14 +40,12 @@ export default function App() {
           onBookingComplete={handleBookingComplete}
         />
       )}
-      
       {currentScreen === 'confirmation' && confirmedBooking && (
         <BookingConfirmationScreen
           booking={confirmedBooking}
           onBackToHome={handleBackToHome}
         />
       )}
-      
       <StatusBar style="auto" />
     </>
   );

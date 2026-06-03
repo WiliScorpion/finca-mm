@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Image } from 'react-native';
 import { StudioFlat } from '../types';
+import Header from '../components/Header';
+import RoomGallery from '../components/RoomGallery';
+
+const VENUE_IMAGES: any[] = [];
 
 const { width, height } = Dimensions.get('window');
 const IS_SMALL_SCREEN = width < 400;
@@ -43,19 +47,19 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.title}>🏛️ Finca M&M</Text>
-      <Text style={styles.subtitle}>Select Your Studio</Text>
+      <Header onHome={onBack} title="Finca M&M" />
+      <View style={styles.subtitleContainer}>
+        <Text style={styles.subtitle}>Select Your Studio</Text>
+      </View>
 
       <View style={styles.amphitheaterContainer}>
-        {/* Arena (center stage) with Ecuadorian flag colors */}
+        {/* Arena (center stage) with Zomreros image */}
         <View style={styles.arena}>
-          <View style={styles.flagYellow} />
-          <View style={styles.flagBlue} />
-          <View style={styles.flagRed} />
-          <View style={styles.arenaContent}>
-            <Text style={styles.arenaText}>🎭 🎭</Text>
-            <Text style={styles.arenaLabel}>ARENA</Text>
-          </View>
+          <Image
+            source={require('../../assets/Zombreros.png')}
+            style={styles.arenaImage}
+            resizeMode="cover"
+          />
         </View>
 
         {/* Studio seats arranged in circle */}
@@ -93,6 +97,12 @@ export default function AmphitheaterBookingScreen({ studios, onStudioSelect, onB
         <View style={[styles.column, styles.columnRight]}>
           <Text style={styles.columnText}>🏛️</Text>
         </View>
+      </View>
+
+      {/* Venue Photos Section */}
+      <View style={styles.venueSection}>
+        <Text style={styles.venueSectionTitle}>📸 Our Venue</Text>
+        <RoomGallery images={VENUE_IMAGES} roomName="Finca M&M" />
       </View>
 
       {/* Studio details section */}
@@ -156,7 +166,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingBottom: 40,
-    paddingTop: 50,
   },
   title: {
     fontSize: IS_SMALL_SCREEN ? 22 : 28,
@@ -166,12 +175,27 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     paddingHorizontal: 10,
   },
+  subtitleContainer: {
+    marginHorizontal: 40,
+    marginTop: 12,
+    marginBottom: 15,
+    backgroundColor: '#cd853f',
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    alignSelf: 'center',
+    shadowColor: '#8b4513',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
+    elevation: 5,
+  },
   subtitle: {
     fontSize: IS_SMALL_SCREEN ? 14 : 16,
     textAlign: 'center',
-    color: '#a0522d',
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    color: '#fff',
+    fontWeight: 'bold',
+    letterSpacing: 1,
   },
   amphitheaterContainer: {
     height: IS_SMALL_SCREEN ? 280 : 400,
@@ -202,6 +226,13 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     overflow: 'hidden',
   },
+  arenaImage: {
+    width: '100%',
+    height: '100%',
+  },
+  arenaEmoji: {
+    fontSize: IS_SMALL_SCREEN ? 30 : 50,
+  },
   flagYellow: {
     position: 'absolute',
     top: 0,
@@ -230,15 +261,6 @@ const styles = StyleSheet.create({
     zIndex: 10,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  arenaText: {
-    fontSize: IS_SMALL_SCREEN ? 20 : 40,
-  },
-  arenaLabel: {
-    fontSize: IS_SMALL_SCREEN ? 7 : 12,
-    fontWeight: 'bold',
-    color: '#8b4513',
-    marginTop: 2,
   },
   studioSeat: {
     position: 'absolute',
@@ -302,6 +324,26 @@ const styles = StyleSheet.create({
   columnText: {
     fontSize: IS_SMALL_SCREEN ? 35 : 50,
   },
+  venueSection: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 15,
+    borderWidth: 2,
+    borderColor: '#d4a574',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  venueSectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#8b4513',
+    marginBottom: 12,
+  },
   detailsSection: {
     paddingHorizontal: 20,
   },
@@ -353,6 +395,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     marginBottom: 10,
+  },
+  noPhotos: {
+    height: 100,
+    backgroundColor: '#e8d4a8',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#cd853f',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  noPhotosText: {
+    fontSize: 14,
+    color: '#a0522d',
   },
   studioMeta: {
     flexDirection: 'row',

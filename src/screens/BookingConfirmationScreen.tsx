@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Booking } from '../types';
+import Header from '../components/Header';
 
 interface Props {
   booking: Booking;
@@ -9,7 +10,8 @@ interface Props {
 
 export default function BookingConfirmationScreen({ booking, onBackToHome }: Props) {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.scrollContainer}>
+      <Header onHome={onBackToHome} title="Booking Confirmed!" />
       <View style={styles.successIcon}>
         <Text style={styles.checkmark}>✓</Text>
       </View>
@@ -72,16 +74,19 @@ export default function BookingConfirmationScreen({ booking, onBackToHome }: Pro
       <TouchableOpacity style={styles.button} onPress={onBackToHome}>
         <Text style={styles.buttonText}>Back to Home</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flex: 1,
+    backgroundColor: '#f4e4c1',
+  },
   container: {
     flex: 1,
     backgroundColor: '#f4e4c1',
     padding: 20,
-    paddingTop: 60,
     alignItems: 'center',
   },
   successIcon: {
