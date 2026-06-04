@@ -1,0 +1,4 @@
+node_modules/
+reactnative/node_modules/
+.env
+*.log

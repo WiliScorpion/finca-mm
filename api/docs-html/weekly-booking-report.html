@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Finca M&amp;M — Weekly Booking Report</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f4e4c1; color: #8b4513; padding: 40px; }
+    h1 { font-size: 32px; font-weight: bold; color: #000; margin-bottom: 4px; }
+    .subtitle { font-size: 15px; color: #666; margin-bottom: 6px; }
+    .nav { margin-bottom: 30px; }
+    .nav a { color: #6200ee; text-decoration: none; margin-right: 24px; font-size: 15px; }
+    .nav a:hover { text-decoration: underline; }
+    h2 { font-size: 20px; font-weight: bold; color: #000; margin: 30px 0 15px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 10px; }
+    .stat-card { background: #fff; border-radius: 10px; padding: 20px; text-align: center; border: 2px solid #d4a574; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    .stat-card .number { font-size: 38px; font-weight: bold; color: #cd853f; }
+    .stat-card .label { font-size: 13px; color: #a0522d; margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; border: 2px solid #d4a574; }
+    th { background: #8b4513; color: #fff; padding: 12px 16px; text-align: left; font-size: 14px; }
+    td { padding: 11px 16px; border-bottom: 1px solid #e8d4a8; font-size: 14px; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fef9f0; }
+    .badge { padding: 3px 10px; border-radius: 10px; font-size: 12px; font-weight: bold; }
+    .confirmed { background: #c8f7c5; color: #2e7d32; }
+    .cancelled  { background: #ffd6d6; color: #c62828; }
+    .completed  { background: #cce5ff; color: #004085; }
+    .footer { margin-top: 40px; font-size: 12px; color: #999; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Finca M&amp;M — Weekly Booking Report</h1>
+  <p class="subtitle">Period: 28/05/2026 – 04/06/2026 &nbsp;|&nbsp; Generated: 04/06/2026, 11:14:27</p>
+
+  <div class="nav">
+    <a href="/status">Service Status</a>
+    <a href="/docs">Swagger UI</a>
+    <a href="/dashboard">Live Dashboard</a>
+    <a href="/documentation">Documentation</a>
+  </div>
+
+  <h2>📊 Weekly Summary</h2>
+  <div class="stats">
+    <div class="stat-card"><div class="number">0</div><div class="label">Total Bookings</div></div>
+    <div class="stat-card"><div class="number">0</div><div class="label">Confirmed</div></div>
+    <div class="stat-card"><div class="number">0</div><div class="label">Cancelled</div></div>
+    <div class="stat-card"><div class="number">$0</div><div class="label">Total Revenue</div></div>
+  </div>
+
+  <h2>🏠 Studio Performance</h2>
+  <table>
+    <thead>
+      <tr><th>Studio</th><th>Bookings</th><th>Revenue</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td>🐦 Carpintero</td>
+        <td>0</td>
+        <td>$0</td>
+        <td><span class="badge confirmed">Available</span></td>
+      </tr>
+      <tr>
+        <td>🐦 Periquito</td>
+        <td>0</td>
+        <td>$0</td>
+        <td><span class="badge confirmed">Available</span></td>
+      </tr>
+      <tr>
+        <td>🦅 Tucán</td>
+        <td>0</td>
+        <td>$0</td>
+        <td><span class="badge confirmed">Available</span></td>
+      </tr>
+      <tr>
+        <td>🦅 Zambullidor</td>
+        <td>0</td>
+        <td>$0</td>
+        <td><span class="badge confirmed">Available</span></td>
+      </tr>
+      <tr>
+        <td>🦅 Cacique amarillo</td>
+        <td>0</td>
+        <td>$0</td>
+        <td><span class="badge confirmed">Available</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>📋 Booking Details</h2>
+  <p style="color:#aaa;padding:20px;">No bookings this week.</p>
+
+  <div class="footer">
+    🏛️ Finca M&amp;M Booking System &nbsp;|&nbsp; Auto-generated every Monday
+  </div>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Finca M&M — Service Status</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      color: #000;
+      background: #fff;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .nav {
+      margin-bottom: 24px;
+    }
+
+    .nav a {
+      color: #6200ee;
+      text-decoration: none;
+      margin-right: 24px;
+      font-size: 15px;
+    }
+
+    .nav a:hover { text-decoration: underline; }
+
+    h2 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .controls button {
+      padding: 4px 10px;
+      border: 1px solid #888;
+      background: #f0f0f0;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    .controls label {
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    .controls input {
+      width: 60px;
+      padding: 3px 6px;
+      border: 1px solid #888;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    .console {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 16px;
+      min-height: 400px;
+      max-height: 600px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .log-info   { color: #9cdcfe; }
+    .log-time   { color: #888; }
+    .log-key    { color: #9cdcfe; }
+    .log-string { color: #ce9178; }
+    .log-number { color: #b5cea8; }
+    .log-bool   { color: #569cd6; }
+    .log-null   { color: #569cd6; }
+    .log-bracket{ color: #ffd700; }
+  </style>
+</head>
+<body>
+
+  <h1>Finca M&amp;M — Service Status</h1>
+
+  <div class="nav">
+    <a href="/docs">Swagger UI</a>
+    <a href="/documentation">Documentation</a>
+    <a href="/dashboard">Live Dashboard</a>
+    <a href="/weekly-booking-report">Weekly Report</a>
+  </div>
+
+  <h2>Console output</h2>
+
+  <div class="controls">
+    <button onclick="refresh()">Refresh</button>
+    <label>Lines: <input type="number" id="lines" value="200" min="10" max="500" /></label>
+  </div>
+
+  <div class="console" id="console"></div>
+
+<script>
+  const consoleEl = document.getElementById('console');
+
+  function syntaxHighlight(json) {
+    const str = JSON.stringify(json, null, 2);
+    return str.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
+      let cls = 'log-number';
+      if (/^"/.test(match)) {
+        cls = /:$/.test(match) ? 'log-key' : 'log-string';
+      } else if (/true|false/.test(match)) {
+        cls = 'log-bool';
+      } else if (/null/.test(match)) {
+        cls = 'log-null';
+      }
+      return `<span class="${cls}">${match}</span>`;
+    })
+    .replace(/[{[]/g, m => `<span class="log-bracket">${m}</span>`)
+    .replace(/[}\]]/g, m => `<span class="log-bracket">${m}</span>`);
+  }
+
+  function log(level, message) {
+    const time = new Date().toISOString();
+    return `<span class="log-time">${time}</span> <span class="log-info">[${level}]</span> ${message}\n`;
+  }
+
+  async function refresh() {
+    const maxLines = parseInt(document.getElementById('lines').value) || 200;
+    let output = '';
+
+    output += log('info', 'Finca M&amp;M API starting up...');
+    output += log('info', 'Swagger documentation available at /docs');
+    output += log('info', 'Live Dashboard available at /dashboard');
+    output += log('info', 'Service Status available at /status');
+
+    try {
+      // Fetch studios
+      const sRes = await fetch('/api/studios');
+      const studios = await sRes.json();
+      output += log('info', `Studios loaded (${studios.length} total):`);
+      output += syntaxHighlight(studios) + '\n\n';
+
+      // Fetch bookings
+      const bRes = await fetch('/api/bookings');
+      const bookings = await bRes.json();
+      output += log('info', `Bookings loaded (${bookings.length} total):`);
+
+      if (bookings.length === 0) {
+        output += log('info', 'No bookings yet. Waiting for reservations from the app...');
+      } else {
+        output += syntaxHighlight(bookings) + '\n\n';
+
+        // Summary stats
+        const confirmed = bookings.filter(b => b.status === 'confirmed').length;
+        const cancelled = bookings.filter(b => b.status === 'cancelled').length;
+        const revenue = bookings
+          .filter(b => b.status === 'confirmed')
+          .reduce((sum, b) => sum + (b.totalPrice || 0), 0);
+
+        output += log('info', `Summary — Confirmed: ${confirmed} | Cancelled: ${cancelled} | Revenue: $${revenue}`);
+      }
+
+      output += log('info', 'API running normally. All systems operational. ✓');
+
+    } catch (e) {
+      output += log('error', `Failed to fetch API data: ${e.message}`);
+    }
+
+    // Limit to maxLines
+    const lines = output.split('\n');
+    consoleEl.innerHTML = lines.slice(-maxLines).join('\n');
+    consoleEl.scrollTop = consoleEl.scrollHeight;
+  }
+
+  // Auto refresh every 5 seconds
+  refresh();
+  setInterval(refresh, 5000);
+</script>
+</body>
+</html>

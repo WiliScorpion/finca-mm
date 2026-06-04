@@ -1,0 +1,6 @@
+@echo off
+echo Starting Finca M&M API...
+start cmd /k "npm run dev"
+echo Starting React Native app...
+start cmd /k "cd reactnative && npm start"
+echo Both servers started!
